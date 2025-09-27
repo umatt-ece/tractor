@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
+import os
 from pathlib import Path
 
 # Paths
@@ -22,5 +23,13 @@ subprocess.run(
     ],
     check=True,
 )
+
+try:
+    os.remove(OPENAPI_PATH)
+    print(f"OpenAPI file deleted: {OPENAPI_PATH}")
+except FileNotFoundError:
+    print(f"OpenAPI file not found: {OPENAPI_PATH}")
+except PermissionError:
+    print(f"Permission denied when trying to delete: {OPENAPI_PATH}")
 
 print(f"TypeScript types generated at {OUTPUT_DIR}")

@@ -1,3 +1,0 @@
-#ifndef TIMER_CONFIG_H
-#define TIMER_CONFIG_H
-#endif // TIMER_CONFIG_H

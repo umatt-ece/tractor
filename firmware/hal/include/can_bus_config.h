@@ -1,3 +1,0 @@
-#ifndef CAN_BUS_CONFIG_H
-#define CAN_BUS_CONFIG_H
-#endif // CAN_BUS_CONFIG_H

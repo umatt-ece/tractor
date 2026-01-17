@@ -1,7 +1,7 @@
 #include "heart.h"
 
 // Reading the data sheet it seems to be the clock for the S32K344 is 48MHz
-#define MS_TICKS 48000UL
+#define MS_TICKS (SystemCoreClock / 1000u)
 
 volatile uint32_t tickCount = 0;
 

@@ -1,0 +1,12 @@
+-DINIT_STDBY_RAM
+-DARMCM7_SP
+-I"C:/Users/Bruce/Documents/tractor/audesse_flex_case_g/include"
+-O0
+-g3
+-Wall
+-c
+-fmessage-length=0
+-ffunction-sections
+-fdata-sections
+-mcpu=cortex-m7
+-specs=rdimon.specs

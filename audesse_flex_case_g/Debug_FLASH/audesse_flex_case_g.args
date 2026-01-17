@@ -1,0 +1,13 @@
+-T
+"C:/Users/Bruce/Documents/tractor/audesse_flex_case_g/Project_Settings/Linker_Files/S32K344_flash.ld"
+-Wl,-Map,"audesse_flex_case_g.map"
+-Xlinker
+--gc-sections
+-n
+-mcpu=cortex-m7
+-specs=rdimon.specs
+"./Project_Settings/Startup_Code/boot_header.o"
+"./Project_Settings/Startup_Code/startup_ARMCM7.o"
+"./Project_Settings/Startup_Code/system_ARMCM7.o"
+"./src/heart.o"
+"./src/main.o"

@@ -11,9 +11,13 @@
 
 typedef void(*Task)(void);
 
-void blinkyTask() {
-	// True xor True = false and False xor True = True
-	SIUL2.GPDO111.B.PDO_N ^= true;
+// TODO: should these be vol
+bool enabled = false;
+uint8_t timestamp = 0;
+
+
+void interlockTask() {
+
 }
 
 void blinkyInit() {
@@ -26,9 +30,10 @@ void blinkyInit() {
 }
 
 int main(void) {
-#define NEXT_TASK_MS 500UL
+#define NEXT_TASK_MS 5UL
+#define LED_BLINK_MS 500UL
 #define NUM_TASKS 1
-	Task tasks[NUM_TASKS] = {blinkyTask};
+	Task tasks[NUM_TASKS] = {interlockTask};
 	uint8_t currentTask = 0;
 
 	uint32_t msCount = 0;
@@ -47,6 +52,10 @@ int main(void) {
 
 		msCount = elapsedMs();
 
+		if((msCount % LED_BLINK_MS) == 0) {
+			// True xor True = false and False xor True = True
+			SIUL2.GPDO111.B.PDO_N ^= true;
+		}
 
 		if((msCount % NEXT_TASK_MS) == 0) {
 			tasks[currentTask]();

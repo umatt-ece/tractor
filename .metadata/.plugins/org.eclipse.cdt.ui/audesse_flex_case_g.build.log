@@ -1,0 +1,11 @@
+14:54:05 **** Incremental Build of configuration Debug_FLASH for project audesse_flex_case_g ****
+make -j8 all 
+Invoking: Standard S32DS Print Size
+arm-none-eabi-size --format=berkeley audesse_flex_case_g.elf
+   text	   data	    bss	    dec	    hex	filename
+   6180	   2508	    256	   8944	   22f0	audesse_flex_case_g.elf
+Finished building: audesse_flex_case_g.siz
+ 
+
+14:54:05 Build Finished. 0 errors, 0 warnings. (took 346ms)
+

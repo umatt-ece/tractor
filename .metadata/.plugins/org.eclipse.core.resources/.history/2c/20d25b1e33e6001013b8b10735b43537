@@ -1,0 +1,85 @@
+/*
+ * interlock_sm.c
+ *
+ *  Created on: Dec. 30, 2025
+ *      Author: Bruce
+ */
+
+
+#include <interlock_sm.h>
+
+typedef InterlockState_t (*getNextState)(bool leftDeadman, bool rightDeadman,
+		bool seat, bool *enabled, uint8_t *timestamp);
+
+static uint8_t graceTime = 0;
+
+InterlockState_t InterlockSm_Disabled(bool leftDeadman, bool rightDeadman,
+		bool seat, bool *enabled, uint8_t *timestamp) {
+	InterlockState_t nextState = INTERLOCK_STATE_DISABLED;
+
+	if(leftDeadman && rightDeadman && seat) {
+		*enabled = true;
+		nextState = INTERLOCK_STATE_ENABLED;
+	} else if(seat && (leftDeadman ^ rightDeadman)) {
+		nextState = INTERLOCK_STATE_WAIT_BOTH;
+	}
+
+	return nextState;
+}
+
+InterlockState_t InterlockSm_Enabled(bool leftDeadman, bool rightDeadman,
+		bool seat, bool *enabled, uint8_t *timestamp) {
+
+	InterlockState_t nextState = INTERLOCK_STATE_ENABLED;
+
+	if(!leftDeadman || !rightDeadman || !seat) {
+		*timestamp = 0;
+		nextState = INTERLOCK_STATE_GRACE;
+	}
+
+	return nextState;
+}
+
+InterlockState_t InterlockSm_WaitBoth(bool leftDeadman, bool rightDeadman,
+		bool seat, bool *enabled, uint8_t *timestamp) {
+	InterlockState_t nextState = INTERLOCK_STATE_WAIT_BOTH;
+
+	if(leftDeadman && rightDeadman && seat) {
+		*enabled = true;
+		nextState = INTERLOCK_STATE_ENABLED;
+	}
+
+	return nextState;
+}
+
+InterlockState_t InterlockSm_Grace(bool leftDeadman, bool rightDeadman,
+		bool seat, bool *enabled, uint8_t *timestamp) {
+	InterlockState_t nextState = INTERLOCK_STATE_GRACE;
+
+	(*timestamp)++;
+
+	if(*timestamp > graceTime) {
+		*enabled = false;
+		nextState = INTERLOCK_STATE_DISABLED;
+	} else if(seat && (leftDeadman ^ rightDeadman)) {
+		*enabled = false;
+		nextState = INTERLOCK_STATE_WAIT_BOTH;
+	}
+
+	return nextState;
+}
+
+void InterlockSm_Init(uint8_t const graceTimeValue) {
+	graceTime = graceTimeValue;
+}
+
+InterlockState_t InterlockSm_Run(bool leftDeadman, bool rightDeadman,
+		bool seat, bool *enabled, uint8_t *timestamp) {
+	static getNextState interlockStates[NUM_INTERLOCK_STATES]  = {InterlockSm_Disabled, InterlockSm_Enabled,
+				InterlockSm_WaitBoth, InterlockSm_Grace};
+	static InterlockState_t currentState = INTERLOCK_STATE_DISABLED;
+
+	currentState = interlockStates[currentState](leftDeadman, rightDeadman, seat, enabled, timestamp);
+
+	 return currentState;
+}

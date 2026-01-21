@@ -1,0 +1,75 @@
+#include <stdbool.h>
+#include <stdio.h>
+
+#include "S32K344.h"
+#include "heart.h"
+#include "interlock_sm.h"
+
+// Page 41 describes the mapping between the Port groups to the index
+// for example PTD31 is 127 -> PortD[0-31] = MSCR127
+#define PTD31 127
+#define PTD15 111
+
+typedef void(*Task)(void);
+
+volatile bool enabled = false;
+volatile uint8_t timestamp = 0;
+
+
+void interlockTask() {
+	bool leftDeadman =  false;
+	bool rightDeadman = false;
+	bool seat = false;
+	InterlockSm_Run(leftDeadman, rightDeadman, seat, &enabled, &timestamp);
+}
+
+void blinkyInit() {
+	// Configures the Lowside Digital output as required by the Audesse Flexcase G
+	SIUL2.MSCR[PTD31].B.OBE = true;
+	SIUL2.GPDO127.B.PDO_N = true;
+
+	SIUL2.MSCR[PTD15].B.OBE = true;
+	SIUL2.GPDO111.B.PDO_N = false;
+}
+
+int main(void) {
+#define NEXT_TASK_MS 5UL
+#define LED_BLINK_MS 500UL
+#define NUM_TASKS 1
+#define GRACE_TIME (10 / NEXT_TASK_MS)
+	Task tasks[NUM_TASKS] = {interlockTask};
+	uint8_t currentTask = 0;
+
+	uint32_t msCount = 0;
+
+	// Enable our SysTicks to have 1 ms timing
+	heartInit();
+
+	blinkyInit();
+
+	// Period of 10
+	InterlockSm_Init(GRACE_TIME);
+
+	// Turn on our interrupt handler for NVIC
+	__enable_irq();
+
+	while(1) {
+		// Sleep until we have an interrupt
+		__WFI();
+
+		msCount = elapsedMs();
+
+		if((msCount % LED_BLINK_MS) == 0) {
+			// True xor True = false and False xor True = True
+			SIUL2.GPDO111.B.PDO_N ^= true;
+		}
+
+		if((msCount % NEXT_TASK_MS) == 0) {
+			tasks[currentTask]();
+
+			currentTask = (currentTask + 1) % NUM_TASKS;
+		}
+	}
+}
+
+

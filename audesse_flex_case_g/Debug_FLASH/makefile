@@ -4,7 +4,7 @@
 
 -include ../makefile.init
 
-RM := rm -rf
+RM := rm
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -30,7 +30,7 @@ audesse_flex_case_g.siz \
 all: audesse_flex_case_g.elf secondary-outputs
 
 # Tool invocations
-audesse_flex_case_g.elf: $(OBJS) C:/Users/Bruce/Documents/tractor/audesse_flex_case_g/Project_Settings/Linker_Files/S32K344_flash.ld $(USER_OBJS)
+audesse_flex_case_g.elf: $(OBJS) ../Project_Settings/Linker_Files/S32K344_flash.ld $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Standard S32DS C Linker'
 	arm-none-eabi-gcc -o "audesse_flex_case_g.elf" "@audesse_flex_case_g.args"  $(USER_OBJS) $(LIBS)
@@ -43,10 +43,9 @@ audesse_flex_case_g.siz: audesse_flex_case_g.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
-# Other Targets
+# Other Targets  TODO: write "clean"
 clean:
-	-$(RM) ./*
-	-@echo ' '
+	$(RM) $$(find . | grep "\.[od]")
 
 secondary-outputs: $(SECONDARY_SIZE)
 

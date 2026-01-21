@@ -1,6 +1,6 @@
 -DINIT_STDBY_RAM
 -DARMCM7_SP
--I"C:/Users/Bruce/Documents/tractor/audesse_flex_case_g/include"
+-I"../include"
 -O0
 -g3
 -Wall

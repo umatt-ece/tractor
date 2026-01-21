@@ -1,5 +1,5 @@
 -T
-"C:/Users/Bruce/Documents/tractor/audesse_flex_case_g/Project_Settings/Linker_Files/S32K344_flash.ld"
+"../Project_Settings/Linker_Files/S32K344_flash.ld"
 -Wl,-Map,"audesse_flex_case_g.map"
 -Xlinker
 --gc-sections

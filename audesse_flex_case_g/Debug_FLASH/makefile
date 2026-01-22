@@ -2,7 +2,8 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
--include ../makefile.init
+# TODO: garbage?
+# -include ../makefile.init
 
 RM := rm
 
@@ -19,12 +20,12 @@ ifneq ($(strip $(C_DEPS)),)
 endif
 endif
 
--include ../makefile.defs
+# TODO: garbage?
+# -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_SIZE += \
 audesse_flex_case_g.siz \
-
 
 # All Target
 all: audesse_flex_case_g.elf secondary-outputs
@@ -45,7 +46,10 @@ audesse_flex_case_g.siz: audesse_flex_case_g.elf
 
 # Other Targets  TODO: write "clean"
 clean:
-	$(RM) $$(find . | grep "\.[od]")
+	@echo 'Cleaning binaries...'
+	-@$(RM) $$(find . | grep "\.[od]") *.elf *.map
+	@echo 'Finished cleaning'
+	@echo ' '
 
 secondary-outputs: $(SECONDARY_SIZE)
 

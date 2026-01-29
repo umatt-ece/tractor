@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  server:
+    build: ./server
+    container_name: tractor-server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  display:
+    build: ./display
+    container_name: tractor-display
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./display:/app
+      - /app/node_modules
+    depends_on:
+      - server

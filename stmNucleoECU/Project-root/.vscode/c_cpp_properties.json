@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Debug STM32F072xB",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../Core/Include",
+                "${workspaceFolder}/../Core/Include/**",
+                "${workspaceFolder}/../cmsis-device-f0-master/Include",
+                "${workspaceFolder}/../cmsis-device-f0-master/Include/**" 
+            ],
+            "defines": ["STM32F072xB"],
+            "cStandard": "gnu99",
+            "cppStandard": "gnu++98",
+            "compilerPath": "/opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=Cortex-M0",
+                "-DSTM32F072xB",
+                "-O1",
+                "-ffunction-sections",
+                "-Wall",
+                "-c",
+                "-std=gnu99",
+                "-I../../cmsis-device-f0-master/Include",
+                "-I../../Core/include"
+            ],
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

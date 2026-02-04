@@ -1,0 +1,22 @@
+{
+  "C_Cpp.default.compilerPath": "/opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc",
+  "makefile.configurations": [
+    {
+      "name": "all"
+    },
+    {
+      "name": "install",
+      "makeArgs": ["main-install"]
+    },
+    {
+      "name": "clean",
+      "makeArgs": ["clean"]
+    }
+  ],
+  "files.associations": {
+    "logger.h": "c",
+    "display.h": "c",
+    "tc.h": "c",
+    "gclk.h": "c"
+  }
+}
